@@ -1,26 +1,45 @@
-# 📊 PresionFiscalETL
+# PresionFiscalETL
 
 Pipeline ETL diseñado para automatizar la extracción, transformación y carga de datos de presión fiscal en países de América Latina y Europa. El sistema está implementado en Google Cloud Platform (GCP) utilizando **Apache Airflow (Cloud Composer)**, **BigQuery**, y **Cloud Storage**, lo que permite una integración escalable, reproducible y trazable de datos abiertos publicados por el Servicio de Rentas Internas del Ecuador (SRI).
 
 ---
 
-## 🎯 Objetivo General
+## Objetivo General
 
 Automatizar la ingesta y transformación de datos sobre presión fiscal en un esquema de Data Warehouse basado en modelo dimensional (estrella), permitiendo consultas analíticas eficientes y la generación de reportes OLAP sobre la carga tributaria de los países registrados.
 
 ---
+## Herramientas y Tecnologías Utilizadas
 
-## 🏗️ Arquitectura del Proyecto
+Este proyecto fue desarrollado utilizando un conjunto moderno de herramientas para la automatización del proceso ETL en la nube:
+
+- **Google Cloud Platform (GCP)**: Plataforma principal de infraestructura en la nube.
+- **Google BigQuery**: Motor de análisis de datos a gran escala, usado como Data Warehouse.
+- **Google Cloud Storage (GCS)**: Almacenamiento de objetos, usado para guardar el archivo CSV fuente.
+- **Apache Airflow (Cloud Composer)**: Orquestador de flujos de trabajo ETL, gestionando tareas dependientes.
+- **Google Colab**: Entorno de desarrollo interactivo utilizado para pruebas y desarrollo inicial de scripts.
+- **Python 3**: Lenguaje principal para el desarrollo del pipeline.
+- **Pandas**: Librería de análisis y transformación de datos.
+- **PyArrow**: Backend utilizado por pandas para exportar datos a BigQuery.
+- **google-cloud-bigquery**: Cliente oficial de Python para trabajar con BigQuery.
+- **google-cloud-storage**: Cliente oficial de Python para interactuar con GCS.
+- **google-auth**: Autenticación mediante credenciales de cuenta de servicio para conexión segura con GCP.
+
+
+## Arquitectura del Proyecto
 
 ```
-+-------------------+        +------------------------+        +------------------------+
-| SRI CSV Download  | --->   | GCS (Cloud Storage)    | --->   | Apache Airflow (ETL DAG)|
-+-------------------+        +------------------------+        +------------------------+
-                                                                       |
-                                                                       v
-                                                              +----------------+
-                                                              |  BigQuery DW   |
-                                                              +----------------+
++---------------------+       +---------------------------+       +---------------------------+
+|   📥 Descarga CSV   | ----> |  ☁️ Google Cloud Storage  | ----> | 🛠️ Apache Airflow (DAG ETL) |
+|     (SRI Ecuador)   |       |     (Archivo Fuente)      |       |     (Transformaciones)     |
++---------------------+       +---------------------------+       +---------------------------+
+                                                                          |
+                                                                          v
+                                                                +---------------------+
+                                                                |   📊 BigQuery DW     |
+                                                                |  (Modelo Estrella)   |
+                                                                +---------------------+
+                                                              
 ```
 
 ### Componentes Principales
@@ -34,7 +53,7 @@ Automatizar la ingesta y transformación de datos sobre presión fiscal en un es
 
 ---
 
-## 🧩 Modelo Dimensional - Esquema Estrella
+## Modelo Dimensional - Esquema Estrella
 
 | Tabla                 | Descripción                                   |
 |-----------------------|-----------------------------------------------|
@@ -81,7 +100,7 @@ Sube el archivo de clave JSON al siguiente path en tu entorno Airflow:
 
 ---
 
-## ⚙️ Estructura del DAG en Airflow
+## Estructura del DAG en Airflow
 
 ```
 presionfiscal_etl
@@ -106,7 +125,7 @@ presionfiscal_etl
 
 ---
 
-## 📥 Ruta de Subida del DAG
+## Ruta de Subida del DAG
 
 Asegúrate de subir tu archivo `.py` del DAG a la siguiente ruta de Cloud Storage:
 
@@ -131,12 +150,24 @@ gsutil cp etl-sistemas-sri-xxxx.json gs://us-central1-etl-composer-XXXX-bucket/d
 
 ---
 
-## 📸 Evidencias Recomendadas
+## Evidencias de funcionamiento
 
 - Captura del DAG ejecutándose con éxito en Airflow.
+  
+  ![Captura del DAG ejecutándose con éxito en Airflow](./E1.png)
+  
 - Conteos de registros por tabla en BigQuery.
+  
+   ![Captura del DAG ejecutándose con éxito en Airflow](./E2.png)
+  
 - Ejemplo de consulta SQL para validación de relaciones entre dimensiones y hechos.
+  
+  ![Captura del DAG ejecutándose con éxito en Airflow](./E3.png)
+
 - Ejemplo de gráfico generado (si aplica) a partir de los datos del DW.
+  
+  ![Captura del DAG ejecutándose con éxito en Airflow](./E4.png)
+  
 
 ---
 
@@ -153,7 +184,6 @@ gsutil cp etl-sistemas-sri-xxxx.json gs://us-central1-etl-composer-XXXX-bucket/d
 **Miryam Alexandra Guerrero Gaibor**  
 Estudiante de Ingeniería de Software - Proyecto Académico  
 ---
-GitHub: [github.com/FranklinGonzabay](https://github.com/FranklinGonzabay)
 
 ---
 
